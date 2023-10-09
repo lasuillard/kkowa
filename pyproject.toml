@@ -6,7 +6,7 @@ authors = ["Yuchan Lee <lasuillard@gmail.com>"]
 classifiers = ["Private :: Do not Upload"]
 
 [tool.poetry.dependencies]
-python = "^3.11,<3.13" # PyInstaller constraint: <3.13,>=3.8
+python = "^3.12,<3.13" # PyInstaller constraint: <3.13,>=3.8
 pyqt6 = "^6.5.2"
 sqlalchemy = "^2.0.21"
 alembic = "^1.12.0"
@@ -48,7 +48,7 @@ ruff = "^0.0.292"
 pyinstaller = "^6.0.0"
 
 [tool.black]
-target-version = ["py311"]
+target-version = ["py312"]
 line-length = 120
 include = '\.pyi?$'
 exclude = """

@@ -1,4 +1,4 @@
-target-version = "py311"
+target-version = "py312"
 select = ["ALL"]
 ignore = ["FIX", "TD003", "ANN101", "ANN102", "ANN401", "D100", "D105", "D106"]
 line-length = 120
