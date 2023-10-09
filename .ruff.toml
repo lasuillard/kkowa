@@ -1,0 +1,19 @@
+target-version = "py311"
+select = ["ALL"]
+ignore = ["FIX", "TD003", "ANN101", "ANN102", "ANN401", "D100", "D105", "D106"]
+line-length = 120
+extend-exclude = ["_generated/", "**/migrations/*"]
+
+[extend-per-file-ignores]
+"__init__.py" = ["D104"]
+"cli/*" = ["T201"]
+"tests/*" = ["D", "S101", "PLR2004", "SLF001"]
+
+[pydocstyle]
+convention = "google"
+
+[isort]
+known-first-party = ["_generated", "cli", "config", "src"]
+
+[flake8-bugbear]
+extend-immutable-calls = ["typer.Option"]

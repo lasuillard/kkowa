@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  workspace:
+    image: localhost:5000/lasuillard/kkowa:local
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: workspace
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    environment:
+      CONTAINER: 1
+      OTEL_SDK_DISABLED: "true"
+      OTEL_SERVICE_NAME: kkowa
+    command: sleep infinity
+    init: true

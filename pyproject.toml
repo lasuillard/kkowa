@@ -1,0 +1,61 @@
+[tool.poetry]
+name = "kkowa"
+version = "0.1.0"
+description = "kkowa app."
+authors = ["Yuchan Lee <lasuillard@gmail.com>"]
+classifiers = ["Private :: Do not Upload"]
+
+[tool.poetry.dependencies]
+python = "^3.11,<3.13" # PyInstaller constraint: <3.13,>=3.8
+pyqt6 = "^6.5.2"
+sqlalchemy = "^2.0.21"
+alembic = "^1.12.0"
+grpcio = "^1.59.0"
+opentelemetry-api = "^1.20.0"
+opentelemetry-exporter-otlp = "^1.20.0"
+opentelemetry-instrumentation-grpc = "^0.41b0"
+opentelemetry-instrumentation-fastapi = "^0.41b0"
+opentelemetry-sdk = "^1.20.0"
+fastapi = { extras = ["all"], version = "^0.103.2" }
+pydantic = "^2.4.2"
+dynaconf = "^3.2.3"
+strawberry-graphql = { extras = [
+  "fastapi",
+  "opentelemetry",
+], version = "^0.209.6" }
+typer = "^0.9.0"
+mitmproxy = "^10.1.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.9.1"
+coverage = "^7.3.2"
+factory-boy = "^3.3.0"
+faker = "^19.6.2"
+mypy = "^1.5.1"
+pytest = "^7.4.2"
+pytest-asyncio = "^0.21.1"
+pytest-benchmark = "^4.0.0"
+pytest-cov = "^4.1.0"
+pytest-env = "^1.0.1"
+pytest-socket = "^0.6.0"
+pytest-sugar = "^0.9.7"
+pytest-timeout = "^2.2.0"
+pytest-xdist = { extras = ["psutil"], version = "^3.3.1" }
+types-protobuf = "^4.24.0.2"
+ipython = "^8.16.1"
+grpcio-tools = "^1.59.0"
+ruff = "^0.0.292"
+pyinstaller = "^6.0.0"
+
+[tool.black]
+target-version = ["py311"]
+line-length = 120
+include = '\.pyi?$'
+exclude = """
+/(
+  | migrations
+  | idl
+  | .venv
+  | _generated
+)/
+"""
