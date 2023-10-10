@@ -38,6 +38,8 @@ RUN poetry install --verbose --no-ansi --no-interaction --no-root --sync --with 
 
 VOLUME ["${WORKSPACE}/.venv"]
 
+RUN git config --system --add safe.directory "${WORKSPACE}"
+
 # Python control variables
 ENV PYTHONUNBUFFERED="1"
 ENV PYTHONPATH="${APP_HOME}/_generated/grpc:${PYTHONPATH}"
