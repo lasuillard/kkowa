@@ -28,12 +28,12 @@ install:  ## Install the app locally
 .PHONY: install
 
 init:  ## Initialize project repository
-	poetry run pre-commit autoupdate
-	poetry run pre-commit install --install-hooks --hook-type pre-commit --hook-type commit-msg
+	pre-commit autoupdate
+	pre-commit install --install-hooks --hook-type pre-commit --hook-type commit-msg
 .PHONY: init
 
-run:  ## Run development server
-	poetry run dotenv ./main.py app
+run:  ## Run GUI application
+	dotenv poetry run python ./main.py app
 .PHONY: run
 
 
@@ -78,7 +78,7 @@ lint: generate  ## Run all linters
 .PHONY: lint
 
 scan:  ## Run all scans
-	poetry run checkov --quiet --directory .
+	checkov --quiet --directory .
 .PHONY: scan
 
 test: generate  ## Run tests
