@@ -7,6 +7,8 @@ services:
         WORKSPACE: /workspaces/kkowa
     volumes:
       - .:/workspaces/kkowa
+    environment:
+      DISPLAY: novnc:0.0
     healthcheck:
       disable: true
 
