@@ -112,13 +112,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: dist-linux
-          path: dist/linux
+          path: dist
 
       - name: Download build artifacts (Windows)
         uses: actions/download-artifact@v3
         with:
           name: dist-windows
-          path: dist/windows
+          path: dist
 
       - name: Show downloaded binaries
         run: ls --recursive dist
