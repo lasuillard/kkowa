@@ -96,8 +96,8 @@ e2e-test: generate  ## Run e2e tests
 build: generate  ## Build application
 	poetry run pyinstaller \
 		--onefile \
-		--hidden-import opentelemetry-sdk \
 		--copy-metadata opentelemetry-sdk \
+		--exclude-module tkinter \
 		main.py
 .PHONY: build
 
