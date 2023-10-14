@@ -59,9 +59,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ubuntu-latest, windows-latest]
+        include:
+          - platform: linux
+            image: ubuntu-latest
+          - platform: windows
+            image: windows-latest
 
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.image }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -90,4 +94,14 @@ jobs:
           flags: ${{ matrix.platform }},unittests
 
       - name: Build with PyInstaller
-        run: poetry run pyinstaller main.py
+        run: >
+          poetry run pyinstaller
+            --onefile
+            --name "kkowa-${{ github.ref_name }}-${{ matrix.platform }}"
+            main.py
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: "dist-${{ matrix.platform }}"
+          path: dist
