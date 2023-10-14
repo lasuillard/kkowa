@@ -64,3 +64,30 @@ jobs:
           files: coverage.xml
           flags: unittests
 
+  build:
+    name: Build
+    needs: lint-and-test
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Poetry
+        run: pip install poetry
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version-file: .python-version
+          cache: poetry
+
+      - name: Install pip deps
+        run: poetry install
+
+      - name: Build with PyInstaller
+        run: poetry run pyinstaller main.py
