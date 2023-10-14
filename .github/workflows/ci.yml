@@ -94,10 +94,30 @@ jobs:
           flags: ${{ matrix.platform }},unittests
 
       - name: Build with PyInstaller
-        run: poetry run pyinstaller --onefile --name "kkowa-${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}-${{ matrix.platform }}" main.py
+        run: poetry run pyinstaller --onefile --name "kkowa-${{ matrix.platform }}" main.py
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: "dist-${{ matrix.platform }}"
           path: dist
+
+  release:
+    name: Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts (Linux)
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-linux
+          path: dist/linux
+
+      - name: Download build artifacts (Windows)
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-windows
+          path: dist/windows
+
+      - name: Show downloaded binaries
+        run: ls --recursive dist
