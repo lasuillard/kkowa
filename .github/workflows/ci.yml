@@ -19,7 +19,8 @@ on:
       - "**.md"
   workflow_dispatch:
 
-permissions: read-all
+permissions:
+  contents: write
 
 jobs:
   lint-and-test:
@@ -122,3 +123,11 @@ jobs:
 
       - name: Show downloaded binaries
         run: ls --recursive dist
+
+      - name: Release app
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/v') # Tag v*
+        with:
+          files: |
+            kkowa-linux
+            kkowa-windows.exe
