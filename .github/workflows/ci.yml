@@ -94,7 +94,7 @@ jobs:
           flags: ${{ matrix.platform }},unittests
 
       - name: Build with PyInstaller
-        run: poetry run pyinstaller --onefile --name "kkowa-${{ github.ref_name }}-${{ matrix.platform }}" main.py
+        run: poetry run pyinstaller --onefile --name "kkowa-${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}-${{ matrix.platform }}" main.py
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
