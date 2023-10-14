@@ -42,6 +42,6 @@ RUN git config --system --add safe.directory "${WORKSPACE}"
 
 # Python control variables
 ENV PYTHONUNBUFFERED="1"
-ENV PYTHONPATH="${APP_HOME}/_generated/grpc:${PYTHONPATH}"
+ENV PYTHONPATH="${WORKSPACE}:${WORKSPACE}/_generated/grpc:${PYTHONPATH}"
 
 HEALTHCHECK NONE
