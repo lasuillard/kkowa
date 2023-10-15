@@ -25,4 +25,7 @@
   "python.testing.pytestEnabled": true,
   "python.testing.unittestEnabled": false,
   "yaml.format.enable": true,
+  "mypy-type-checker.path": [
+    "${workspaceFolder}/.venv/bin/mypy"
+  ]
 }
