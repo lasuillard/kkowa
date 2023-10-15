@@ -3,6 +3,8 @@ from logging import getLogger
 
 import grpc
 from grpc._server import _Context
+from grpc_health.v1 import health, health_pb2, health_pb2_grpc
+from grpc_reflection.v1alpha import reflection
 
 from _generated.grpc import helloworld_pb2, helloworld_pb2_grpc
 
@@ -26,6 +28,13 @@ def run(address: str) -> None:
     """
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     helloworld_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
+    health_pb2_grpc.add_HealthServicer_to_server(health.HealthServicer(), server)
+    service_names = (
+        helloworld_pb2.DESCRIPTOR.services_by_name["Greeter"].full_name,
+        health_pb2.DESCRIPTOR.services_by_name["Health"].full_name,
+        reflection.SERVICE_NAME,
+    )
+    reflection.enable_server_reflection(service_names, server)
     server.add_insecure_port(address)
     server.start()
     print("Server started, listening on %s" % address)  # noqa: T201
