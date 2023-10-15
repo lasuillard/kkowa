@@ -20,7 +20,17 @@ from src import app
 from . import common
 
 
-def _app(grpc_endpoint: Annotated[str, typer.Option(help="gRPC endpoint.")] = "") -> None:
+def _app(
+    ipc_address: Annotated[
+        str,
+        typer.Option(
+            help=(
+                "IPC address. By default it create UNIX Domain Socket internally."
+                " If provided would expose IPC server to network, allowing external applications to access."
+            ),
+        ),
+    ] = "",
+) -> None:
     """Start GUI application."""
     # TODO(lasuillard): Initialize logging config first
 
@@ -30,7 +40,7 @@ def _app(grpc_endpoint: Annotated[str, typer.Option(help="gRPC endpoint.")] = ""
     atexit.register(_init_logs().shutdown)
 
     # Launch app
-    app.run(grpc_endpoint=grpc_endpoint)
+    app.run(ipc_address=ipc_address)
 
 
 def register(app: typer.Typer) -> None:
