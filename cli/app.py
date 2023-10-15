@@ -1,5 +1,6 @@
 import atexit
 from logging import getLogger
+from typing import Annotated
 
 import typer
 from opentelemetry import _logs, metrics, trace
@@ -19,7 +20,7 @@ from src import app
 from . import common
 
 
-def _app() -> None:
+def _app(grpc_endpoint: Annotated[str, typer.Option(help="gRPC endpoint.")] = "") -> None:
     """Start GUI application."""
     # TODO(lasuillard): Initialize logging config first
 
@@ -29,7 +30,7 @@ def _app() -> None:
     atexit.register(_init_logs().shutdown)
 
     # Launch app
-    app.run()
+    app.run(grpc_endpoint=grpc_endpoint)
 
 
 def register(app: typer.Typer) -> None:
