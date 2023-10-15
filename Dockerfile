@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     gnupg2 \
     make \
     xvfb \
-    # PyQt6
+    # PySide6
     libxkbcommon-x11-0 \
     libegl1 \
     libfontconfig \
