@@ -19,6 +19,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     libglib2.0-0 \
     libdbus-1-3 \
     qtwayland5 \
+    # Databases
+    sqlite3 \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
     && rm -rf /var/lib/apt/lists/*
 
