@@ -11,9 +11,9 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("kkowa")
-        label = QLabel("Hello, World!")
-        label.setMargin(10)
-        self.setCentralWidget(label)
+        self.label = QLabel("Hello, World!")
+        self.label.setMargin(10)
+        self.setCentralWidget(self.label)
         self.show()
 
 

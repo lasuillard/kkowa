@@ -46,6 +46,7 @@ ipython = "^8.16.1"
 grpcio-tools = "^1.59.0"
 ruff = "^0.0.292"
 pyinstaller = "^6.0.0"
+pytest-qt = "^4.2.0"
 
 [tool.black]
 target-version = ["py311"]
