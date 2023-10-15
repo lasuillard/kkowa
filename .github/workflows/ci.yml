@@ -129,5 +129,5 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v') # Tag v*
         with:
           files: |
-            kkowa-linux
-            kkowa-windows.exe
+            dist/kkowa-linux
+            dist/kkowa-windows.exe
