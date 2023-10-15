@@ -110,7 +110,7 @@ docs:  ## Generate dev documents
 # Handy Scripts
 # =============================================================================
 clean:  ## Remove temporary files
-	rm -rf .mypy_cache/ .pytest_cache/ .ruff_cache/ build/ dist/ htmlcov/ .coverage coverage.xml report.xml
+	rm -rf .mypy_cache/ .pytest_cache/ .ruff_cache/ build/ dist/ htmlcov/ .coverage coverage.xml report.xml *.spec
 	find . -path '*/__pycache__*' -delete
 	find . -path "*.log*" -delete
 .PHONY: clean
