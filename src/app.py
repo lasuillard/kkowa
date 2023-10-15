@@ -1,7 +1,7 @@
 import multiprocessing as mp
 from logging import getLogger
 
-from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton
+from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton
 
 from _generated.grpc import helloworld_pb2
 from src import core
@@ -19,9 +19,9 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("kkowa")
-        label = QLabel("Hello, World!")
-        label.setMargin(10)
-        self.setCentralWidget(label)
+        self.label = QLabel("Hello, World!")
+        self.label.setMargin(10)
+        self.setCentralWidget(self.label)
 
         self._client_factory = ClientFactory(address=ipc_address)
 
