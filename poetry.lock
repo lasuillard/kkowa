@@ -962,6 +962,36 @@ files = [
 protobuf = ["grpcio-tools (>=1.59.0)"]
 
 [[package]]
+name = "grpcio-health-checking"
+version = "1.59.0"
+description = "Standard Health Checking Service for gRPC"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "grpcio-health-checking-1.59.0.tar.gz", hash = "sha256:e0221ca6ea6c2139614179808b8f8b323037d0b1bdefb0fc4cdd9a814999571e"},
+    {file = "grpcio_health_checking-1.59.0-py3-none-any.whl", hash = "sha256:c4dfafd610241346f3978dec1a57ac9997a012ce41f28f7c258ba75bd680ddb4"},
+]
+
+[package.dependencies]
+grpcio = ">=1.59.0"
+protobuf = ">=4.21.6"
+
+[[package]]
+name = "grpcio-reflection"
+version = "1.59.0"
+description = "Standard Protobuf Reflection Service for gRPC"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "grpcio-reflection-1.59.0.tar.gz", hash = "sha256:1fe8f0dd6c180fdcf4e12ced2a8f784d9c741ccbc0b198585b1df024b7f8f3f2"},
+    {file = "grpcio_reflection-1.59.0-py3-none-any.whl", hash = "sha256:bf4efc7e2e8162e5be9736f4d0a0b324c9bf0c04ad597a9d78fcaf1fbdf818ec"},
+]
+
+[package.dependencies]
+grpcio = ">=1.59.0"
+protobuf = ">=4.21.6"
+
+[[package]]
 name = "grpcio-tools"
 version = "1.59.0"
 description = "Protobuf code generator for gRPC"
@@ -3826,4 +3856,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11,<3.12"
-content-hash = "5882ed4832a12579a000c752295660f9f8bdfc328a469097efa7df060534a138"
+content-hash = "db9d89ba9701e02affc295ff4f5a1f9ecb734cef148ca40811473e7d0cfef738"
