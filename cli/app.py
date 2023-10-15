@@ -6,6 +6,7 @@ from opentelemetry import _logs, metrics, trace
 from opentelemetry.exporter.otlp.proto.grpc._log_exporter import OTLPLogExporter
 from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.instrumentation.grpc import GrpcInstrumentorClient, GrpcInstrumentorServer
 from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 from opentelemetry.sdk.metrics import MeterProvider
@@ -47,6 +48,9 @@ def _init_tracer() -> TracerProvider:
         BatchSpanProcessor(OTLPSpanExporter()),
     )
     trace.set_tracer_provider(tracer_provider)
+
+    GrpcInstrumentorClient().instrument()
+    GrpcInstrumentorServer().instrument()
 
     return tracer_provider
 
