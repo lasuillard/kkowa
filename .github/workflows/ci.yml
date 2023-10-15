@@ -90,6 +90,8 @@ jobs:
         run: poetry install
 
       - name: Run tests
+        env:
+          QT_QPA_PLATFORM: offscreen
         run: poetry run pytest
 
       - name: Upload coverage report
