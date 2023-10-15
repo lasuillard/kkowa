@@ -19,7 +19,8 @@ on:
       - "**.md"
   workflow_dispatch:
 
-permissions: read-all
+permissions:
+  contents: write
 
 jobs:
   lint-and-test:
@@ -53,6 +54,35 @@ jobs:
       - name: Run type checks
         run: poetry run mypy --show-error-codes --pretty .
 
+  build:
+    name: Build
+    needs: lint-and-test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux
+            image: ubuntu-latest
+          - platform: windows
+            image: windows-latest
+
+    runs-on: ${{ matrix.image }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Poetry
+        run: pip install poetry
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version-file: .python-version
+          cache: poetry
+
+      - name: Install pip deps
+        run: poetry install
+
       - name: Run tests
         run: poetry run pytest
 
@@ -62,5 +92,42 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
           files: coverage.xml
-          flags: unittests
+          flags: ${{ matrix.platform }},unittests
 
+      - name: Build with PyInstaller
+        run: poetry run pyinstaller --onefile --name "kkowa-${{ matrix.platform }}" main.py
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: "dist-${{ matrix.platform }}"
+          path: dist
+          retention-days: 3
+
+  release:
+    name: Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts (Linux)
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-linux
+          path: dist
+
+      - name: Download build artifacts (Windows)
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-windows
+          path: dist
+
+      - name: Show downloaded binaries
+        run: ls --recursive dist
+
+      - name: Release app
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/v') # Tag v*
+        with:
+          files: |
+            dist/kkowa-linux
+            dist/kkowa-windows.exe
