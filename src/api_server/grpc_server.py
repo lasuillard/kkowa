@@ -28,18 +28,19 @@ def run(address: str) -> None:
     """
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     helloworld_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
+
+    # Health check
     health_pb2_grpc.add_HealthServicer_to_server(health.HealthServicer(), server)
+
+    # Reflection
     service_names = (
         helloworld_pb2.DESCRIPTOR.services_by_name["Greeter"].full_name,
         health_pb2.DESCRIPTOR.services_by_name["Health"].full_name,
         reflection.SERVICE_NAME,
     )
     reflection.enable_server_reflection(service_names, server)
-    server.add_insecure_port(address)
+
+    server.add_insecure_port(address)  # It returns 1 if UDS
     server.start()
-    print("Server started, listening on %s" % address)  # noqa: T201
+    logger.info("Server started, listening on %s", address)
     server.wait_for_termination()
-
-
-if __name__ == "__main__":
-    run("localhost:50051")

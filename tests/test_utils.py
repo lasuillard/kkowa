@@ -1,6 +1,8 @@
+from tempfile import tempdir
+
 import pytest
 
-from src.utils import random_string
+from src.utils import random_string, random_uds
 
 
 def test_random_string() -> None:
@@ -15,3 +17,9 @@ def test_random_string() -> None:
 
     assert random_string(prefix="prefix-").startswith("prefix-")
     assert random_string(suffix="-suffix").endswith("-suffix")
+
+
+def test_random_uds() -> None:
+    uds = random_uds()
+    assert uds.startswith(f"unix://{tempdir}/kkowa-")
+    assert uds.endswith(".sock")
