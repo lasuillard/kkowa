@@ -40,8 +40,22 @@ class Server:
         self._server.add_insecure_port(address)  # It returns 1 if UDS
         self._address = address
 
-    def start(self) -> None:
+    @property
+    def address(self) -> str:
+        """Return server listen address."""
+        return self._address
+
+    def start(self, *, blocking: bool = False) -> None:
         """Start IPC server."""
         self._server.start()
         logger.info("IPC server listening on %s", self._address)
-        self._server.wait_for_termination()
+        if blocking:
+            self._server.wait_for_termination()
+
+    def stop(self, grace: float | None) -> None:
+        """Stop server.
+
+        Args:
+            grace: Graceful shutdown period. If `None`, abort all RPCs immediately.
+        """
+        self._server.stop(grace)

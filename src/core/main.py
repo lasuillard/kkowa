@@ -15,4 +15,4 @@ def run(*, ipc_address: str) -> None:
     # Run IPC server
     logger.info("Starting IPC server")
     ipc_server = ipc.Server(address=ipc_address)
-    ipc_server.start()
+    ipc_server.start(blocking=True)
