@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     gnupg2 \
     make \
     xvfb \
-    # PyQt6
+    # PySide6
     libxkbcommon-x11-0 \
     libegl1 \
     libfontconfig \
@@ -21,6 +21,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     qtwayland5 \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
     && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL -o /usr/bin/grpc_health_probe "https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.4.21/grpc_health_probe-linux-$(dpkg --print-architecture)" \
+    && chmod +x /usr/bin/grpc_health_probe
 
 RUN pip install --no-cache-dir poetry
 
@@ -42,6 +45,6 @@ RUN git config --system --add safe.directory "${WORKSPACE}"
 
 # Python control variables
 ENV PYTHONUNBUFFERED="1"
-ENV PYTHONPATH="${APP_HOME}/_generated/grpc:${PYTHONPATH}"
+ENV PYTHONPATH="${WORKSPACE}:${WORKSPACE}/_generated/grpc:${PYTHONPATH}"
 
 HEALTHCHECK NONE

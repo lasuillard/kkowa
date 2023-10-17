@@ -1,11 +1,13 @@
 import atexit
 from logging import getLogger
+from typing import Annotated
 
 import typer
 from opentelemetry import _logs, metrics, trace
 from opentelemetry.exporter.otlp.proto.grpc._log_exporter import OTLPLogExporter
 from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.instrumentation.grpc import GrpcInstrumentorClient, GrpcInstrumentorServer
 from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 from opentelemetry.sdk.metrics import MeterProvider
@@ -18,7 +20,17 @@ from src import app
 from . import common
 
 
-def _app() -> None:
+def _app(
+    ipc_address: Annotated[
+        str,
+        typer.Option(
+            help=(
+                "IPC address. By default it create UNIX Domain Socket internally."
+                " If provided would expose IPC server to network, allowing external applications to access."
+            ),
+        ),
+    ] = "",
+) -> None:
     """Start GUI application."""
     # TODO(lasuillard): Initialize logging config first
 
@@ -28,7 +40,7 @@ def _app() -> None:
     atexit.register(_init_logs().shutdown)
 
     # Launch app
-    app.run()
+    app.run(ipc_address=ipc_address)
 
 
 def register(app: typer.Typer) -> None:
@@ -47,6 +59,9 @@ def _init_tracer() -> TracerProvider:
         BatchSpanProcessor(OTLPSpanExporter()),
     )
     trace.set_tracer_provider(tracer_provider)
+
+    GrpcInstrumentorClient().instrument()
+    GrpcInstrumentorServer().instrument()
 
     return tracer_provider
 

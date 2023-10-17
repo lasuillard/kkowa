@@ -19,7 +19,8 @@ on:
       - "**.md"
   workflow_dispatch:
 
-permissions: read-all
+permissions:
+  contents: write
 
 jobs:
   lint-and-test:
@@ -53,7 +54,44 @@ jobs:
       - name: Run type checks
         run: poetry run mypy --show-error-codes --pretty .
 
+  build:
+    name: Build
+    needs: lint-and-test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux
+            image: ubuntu-latest
+          - platform: windows
+            image: windows-latest
+
+    runs-on: ${{ matrix.image }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Linux dependencies
+        if: matrix.image == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxkbcommon-x11-0 libegl1 libfontconfig libglib2.0-0 libdbus-1-3 qtwayland5
+
+      - name: Set up Poetry
+        run: pip install poetry
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version-file: .python-version
+          cache: poetry
+
+      - name: Install pip deps
+        run: poetry install
+
       - name: Run tests
+        env:
+          QT_QPA_PLATFORM: offscreen
         run: poetry run pytest
 
       - name: Upload coverage report
@@ -62,5 +100,42 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
           files: coverage.xml
-          flags: unittests
+          flags: ${{ matrix.platform }},unittests
 
+      - name: Build with PyInstaller
+        run: poetry run pyinstaller --name "kkowa-${{ matrix.platform }}" --onefile --copy-metadata opentelemetry_api --copy-metadata opentelemetry_sdk --copy-metadata grpcio --collect-submodules opentelemetry_exporter_otlp_proto_grpc --collect-submodules opentelemetry --exclude-module tkinter main.py
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: "dist-${{ matrix.platform }}"
+          path: dist
+          retention-days: 3
+
+  release:
+    name: Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts (Linux)
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-linux
+          path: dist
+
+      - name: Download build artifacts (Windows)
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-windows
+          path: dist
+
+      - name: Show downloaded binaries
+        run: ls --recursive dist
+
+      - name: Release app
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/v') # Tag v*
+        with:
+          files: |
+            dist/kkowa-linux
+            dist/kkowa-windows.exe
