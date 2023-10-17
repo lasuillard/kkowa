@@ -27,5 +27,12 @@
   "yaml.format.enable": true,
   "mypy-type-checker.path": [
     "${workspaceFolder}/.venv/bin/mypy"
-  ]
+  ],
+  "files.exclude": {
+    "**/__pycache__": true,
+    ".mypy_cache": true,
+    ".pytest_cache": true,
+    ".ruff_cache": true,
+    ".venv": true
+  }
 }
