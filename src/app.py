@@ -4,7 +4,7 @@ from logging import getLogger
 from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton
 
 from _generated.grpc import helloworld_pb2
-from src import core, mitmproxy
+from src import core, proxy
 from src.ipc import ClientFactory
 from src.utils import random_uds
 
@@ -55,7 +55,7 @@ def run(ipc_address: str | None = None) -> None:
 
     # Run mitmproxy
     # TODO(lasuillard): Each process should sink logs to files, only GUI app logs to terminal
-    mitmproxy_app = mp.Process(target=mitmproxy.run, args=())
+    mitmproxy_app = mp.Process(target=proxy.run, args=())
     mitmproxy_app.start()
 
     # Run GUI application
