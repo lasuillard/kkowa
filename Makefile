@@ -98,6 +98,7 @@ build: generate  ## Build application
 		--onefile \
 		--copy-metadata opentelemetry_api \
 		--copy-metadata opentelemetry_sdk \
+		--copy-metadata grpcio \
 		--collect-submodules opentelemetry_exporter_otlp_proto_grpc \
 		--collect-submodules opentelemetry \
 		--exclude-module tkinter \

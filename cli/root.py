@@ -1,6 +1,6 @@
 import typer
 
-from . import app, wrapper
+from . import app
 
 cli = typer.Typer(
     help="kkowa app.",
@@ -10,7 +10,6 @@ cli = typer.Typer(
 # Register commands; if need nested subcommand, use `app.add_typer()`
 # https://typer.tiangolo.com/tutorial/subcommands/nested-subcommands/
 app.register(cli)
-wrapper.register(cli)
 
 
 # Dummy for exposing single command on CLI help
