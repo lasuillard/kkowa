@@ -8,6 +8,7 @@ extend-exclude = ["_generated/", "**/migrations/*"]
 "__init__.py" = ["D104"]
 "cli/*" = ["T201"]
 "tests/*" = ["D", "S101", "PLR2004", "SLF001"]
+"scripts/*" = ["INP001", "T201"]
 
 [pydocstyle]
 convention = "google"
