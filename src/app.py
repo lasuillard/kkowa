@@ -1,7 +1,7 @@
 import multiprocessing as mp
 from logging import getLogger
 
-from src import core, gui
+from src import core, gui, proxy
 from src.utils import random_uds
 
 logger = getLogger(__name__)
@@ -20,6 +20,11 @@ def run(ipc_address: str | None = None) -> None:
         },
     )
     core_app.start()
+
+    # Run mitmproxy
+    # TODO(lasuillard): Each process should sink logs to files, only GUI app logs to terminal
+    mitmproxy_app = mp.Process(target=proxy.run, args=())
+    mitmproxy_app.start()
 
     # Run GUI application
     gui_app = mp.Process(
