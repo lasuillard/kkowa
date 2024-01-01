@@ -24,7 +24,7 @@ grpcio-health-checking = "^1.59.0"
 pyside6 = "^6.5.3"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.9.1"
+black = "^23.12.1"
 coverage = "^7.3.2"
 factory-boy = "^3.3.0"
 faker = "^19.6.2"
